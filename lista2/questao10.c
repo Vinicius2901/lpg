@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 float taylor_it(int n);
-float taylor_rec(int n);
+float taylor_rec(int n, float termo1, float termo);
 
 int main()
 {
@@ -12,7 +12,7 @@ int main()
     float resultado = taylor_it(n);
     printf("Resultado iterativo: %f\n", resultado);
     
-    float resultado2 = taylor_rec(n);
+    float resultado2 = taylor_rec(n, 1, 1);
     printf("Resultado recursivo: %f\n", resultado2);
 
     return 0;
@@ -30,13 +30,12 @@ float taylor_it (int n)
     return termo;
 }
 
-float taylor_rec (int n)
+float taylor_rec (int n, float termo1, float termo)
 {
-    float termo = 1, termo1 = 1;
-    if (n > 0);
+    if (n > 0)
     {
         termo1 *= 1/n;
-        taylor_rec(n-1);
-        return
+        taylor_rec(n-1, termo1, termo);
+        return termo + termo1 + taylor_rec(n-1, termo1, termo);
     }
 }
