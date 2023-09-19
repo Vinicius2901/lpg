@@ -11,3 +11,5 @@ void bubble_sort(int x[], int k);
 // Funções para matrizes
 void mostra_matriz (int lin, int col, int x[lin][col]); // Você precisa dizer o número de colunas de uma matriz para passar como parametro em uma função.
 void gera_valores_matriz (int lin, int col, int x[lin][col]);
+void diagonal_principal (int dim, int x[dim][dim]);
+void diagonal_secundaria (int dim, int x[dim][dim]);
