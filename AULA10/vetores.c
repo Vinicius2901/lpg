@@ -91,3 +91,45 @@ void mostra_matriz (int lin, int col, int x[lin][col])
     printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     return 0;
 }
+
+void diagonal_principal (int dim, int x[dim][dim])
+{
+    int i, j;
+    printf("Diagonal principal: ");
+    /*for(i = 0; i < dim; i++)
+    {
+        for (j = 0; j < dim; j++)
+        {
+            if (i == j)
+            {
+                printf("%d ", x[i][j]);
+            }
+        }
+    }*/
+    for (i = 0; i < dim; i++)
+    {
+        printf("%d ", x[i][i]);
+    }
+    printf("\n");
+}
+
+void diagonal_secundaria (int dim, int x[dim][dim])
+{
+    int i, j;
+    printf("Diagonal secundaria: ");
+    /*for(i = 0; i < dim; i++)
+    {
+        for (j = 0; j < dim; j++)
+        {
+            if (i + j == dim - 1) // j = dim - 1 - i
+            {
+                printf("%d ", x[i][j]);
+            }
+        }
+    }*/
+    for (i = 0; i < dim; i++)
+    {
+        printf("%d ", x[i][dim-1-i]);
+    }
+    printf("\n");
+}
