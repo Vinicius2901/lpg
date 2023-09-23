@@ -3,6 +3,50 @@
 #include <time.h>
 #include "vetores.h"
 
+int binary_search(int v[], int n, int key)
+{
+    int ini = 0, fim = n-1, meio;
+    int cont = 0;
+
+    do
+    {
+        cont++; // Conta a quantidade de iterações
+        meio = ( ini + fim ) / 2;
+        if(v[meio] == key)
+        {
+            printf("[Busca executada em %i iteracoes.]\n", cont);
+            return meio; // Encontrado em meio!
+        }
+        if(v[meio] < key)
+            ini = meio + 1;
+        else
+            fim = meio - 1;
+    }   while(ini <= fim);
+
+    return -1; // Não encontrado!
+}
+
+void gera_valores(int x[], int k, int limite)
+{
+    int i;
+    srand(time(0)); // Define a "semente" do rand() como sendo a hora atual.
+    for (i = 0; i < k; i++)
+    {
+        x[i] = rand() % limite + 1; // Gera um número entre 1 e o limite.
+    }
+}
+
+void gera_valores_ordem(int x[], int k, int limite)
+{
+    int i;
+    srand(time(0)); // Define a "semente" do rand() como sendo a hora atual.
+    x[0] = rand () % limite + 1; // Gera o 1o valor
+    for (i = 1; i < k; i++)
+    {
+        x[i] = x[i-1] + rand() % limite + 1; // Gera um número entre 1 e o limite.
+    }
+}
+
 void mostra_vetor(int x[]/*o vetor é um ponteiro*/, int k, char nome[])
 {
     int i;
@@ -28,7 +72,7 @@ void mostra_vetor_2(int x[]/*o vetor é um ponteiro*/, int k, char nome[])
 void selecion_sort(int x[], int k)
 {
     int i, j;
-    for (i = 0; i <k-1; i++)
+    for (i = 0; i < k-1; i++)
     {
         int i_menor = i;
         for(j = i+1; j < k; j++)
@@ -72,7 +116,7 @@ void gera_valores_matriz (int lin, int col, int x[lin][col])
     {
         for(j = 0; j < col; j++)
         {
-            x[i][j] = rand() % 10;
+            x[i][j] = rand() % 10000;
         }
     }
 }
@@ -89,6 +133,7 @@ void mostra_matriz (int lin, int col, int x[lin][col])
         printf("\n");
     }
     printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    return 0;
 }
 
 void diagonal_principal (int dim, int x[dim][dim])
@@ -131,57 +176,4 @@ void diagonal_secundaria (int dim, int x[dim][dim])
         printf("%d ", x[i][dim-1-i]);
     }
     printf("\n");
-}
-
-float media_pares( int lin, int col, int x[lin][col])
-{
-    int i, j, soma = 0, cont = 0;
-    for( i = 0; i < lin; i++ )
-    {
-        for( j = 0; j < col; j++)
-        {
-            if( x[i][j] % 2 == 0)
-            {
-                soma += x[i][j];
-                cont++;
-            }
-        }
-    }
-    if( cont == 0) // Gambiarra para não dar erro!
-        return 0;
-
-    return (float)soma / cont;
-}
-
-void gera_transposta( int lin, int col, int m[lin][col], int t[col][lin] )
-{
-    int i, j;
-    for( i = 0; i < lin; i++ )
-    {
-        for( j = 0; j < col; j++)
-        {
-            t[j][i] = m[i][j];
-        }
-    }
-}
-
-void soma_matrizes( int lin, int col, int m1[lin][col], int m2[lin][col], int m3[lin][col] )
-{
-    int i, j;
-    for( i = 0; i < lin; i++)
-        for( j = 0; j < col; j++)
-            m3[i][j] = m1[i][j] + m2[i][j];
-}
-
-void multi_matrizes( int la, int ca, int a[la][ca], int lb, int cb, int b[lb][cb], int c[la][cb] )
-{
-    int i, j, k;
-    for( i = 0; i < la; i++ )
-        for( j = 0; j < cb; j++ )
-        {
-            int soma = 0;
-            for( k = 0; k < ca; k++ )
-                soma += a[i][k] * b[k][j];
-            c[i][j] = soma;
-        }
 }
