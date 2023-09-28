@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+
+void gera_vetor_input_float( float x[], int n );
+int compara(float a[], float b[], int n);
+
+
+int main()
+{
+    int n;
+
+    printf("Digite quantos termos deseja no vetor: ");
+    scanf("%i", &n);
+
+    float a[n], b[n];
+
+    gera_vetor_input_float( a, n );
+    gera_vetor_input_float( b, n );
+
+    if (compara( a, b, n ))
+        printf("Sao iguais\n");
+
+    else
+        printf("Nao sao iguais\n");
+
+    return 0;
+}
+
+void gera_vetor_input_float( float x[], int n )
+{
+    int i;
+    printf("Digite os termos do vetor: ");
+    for( i = 0; i < n; i++ )
+        scanf("%f", &x[i]);
+}
+
+int compara(float a[], float b[], int n)
+{
+    int i;
+    for( i = 0; i < n; i++)
+    {
+        if (a[i] != b[i])
+            return 0;
+    }
+    return 1;
+}
