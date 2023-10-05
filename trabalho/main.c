@@ -178,10 +178,12 @@ void remover( int m[M][N], int rem )
 
 void unir( int m[M][N], int conj1, int conj2, int unidos)
 {
-    int i, count;
+    int i, count = 0;
+    for( i = 0; m[conj1][i]; i++ )
+        count++;
     for( i = 0; m[conj2][i]; i++ )
     {
-        count = i;
+        count++;
         if( seq_search( m[conj1], N, m[conj2][i] ) )
             count--;
     }
