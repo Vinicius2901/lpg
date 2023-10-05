@@ -5,8 +5,10 @@
 #define N 10
 
 void menu();
-int seq_search( int m[M][N], int conj, int conf, int count );
+int seq_search( int m[], int n, int chave );
 void inserir( int m[M][N], int conj);
+void remover( int m[M][N], int rem );
+void unir( int m[M][N], int conj1, int conj2, int unidos);
 
 int main()
 {
@@ -15,7 +17,7 @@ int main()
     for( i = 0; i < M; i++ )
         for( j = 0; j < N; j++ )
             m[i][j] = 0;
-    int opt, conj;
+    int opt;
     do
     {
         system( "cls" );
@@ -30,7 +32,7 @@ int main()
                     printf("Conjunto %i foi criado!\n", count-1);
                 }
                 else
-                    printf("Nao eh possivel criar um novo conjunto\n");
+                    printf("Limite maximo de conjuntos atingido\n");
                 system( "pause" );
                 break;
 
@@ -41,6 +43,7 @@ int main()
                     break;
                 }
                 printf("Qual conjunto voce deseja? ");
+                int conj;
                 scanf("%i", &conj);
                 if( count <= conj )
                     printf("Esse conjunto nao existe!\n");
@@ -49,8 +52,42 @@ int main()
                 system( "pause" );
                 break;
             
-            //case 3:
-        
+            case 3:
+                if( count == 0 )
+                {
+                    printf("Voce precisa criar um conjunto primeiro.\n");
+                    break;
+                }
+                printf("Qual conjunto deseja remover? ");
+                int rem;
+                scanf("%i", &rem);
+                remover( m, rem );
+                count--;
+                system( "pause" );
+                break;
+
+            case 4:
+                if( count <= 1 )
+                {
+                    printf("Voce precisa criar pelo menos dois coinjuntos primeiro.\n");
+                    break;
+                }
+                if( count == M-1 )
+                {
+                    printf("Limite de conjuntos atingidos, por favor remova algum conjunto.\n");
+                    break;
+                }
+                count++;
+                printf("Digite o numero do primeiro conjunto que deseja unir: ");
+                int conj1, conj2;
+                scanf("%i", conj1);
+                printf("Digite o numero do segundo conjunto que deseja unir: ");
+                scanf("%i", conj2);
+                
+                unir( m, conj1, conj2, count);
+                system( "pause" );
+                break;
+
             system( "pause" );
         }
     } while (opt != 9);
@@ -78,12 +115,12 @@ void menu()
     printf("( 9 ) Sair do programa\n\n");
 }
 
-int seq_search( int m[M][N], int conj, int conf, int count )
+int seq_search( int m[], int n, int chave )
 {
     int i = 0;
-    for( i = 0; m[conj][i] != 0 && i < count; i++)
+    for( i = 0; i < n; i++)
     {
-        if( m[conj][i] == conf )
+        if( m[i] == chave )
             return 1;
     }
     return 0;
@@ -100,7 +137,7 @@ void inserir( int m[M][N], int conj)
         printf("Digite o %i elemento do conjunto: ", i+1);
         scanf("%i", &m[conj][i]);
         conf = m[conj][i];
-        if( seq_search( m, conj, conf, i ) ) // Verificação de números iguais.
+        if( seq_search( m[conj], i, conf ) ) // Verificação de números iguais.
         {
             printf("Valor ja existe no vetor, Digite novamente: ");
             i--;
@@ -121,4 +158,44 @@ void inserir( int m[M][N], int conj)
 
     if( i > N )
         printf("Limite do conjunto ultrapassado");*/
+}
+
+void remover( int m[M][N], int rem )
+{
+    int i;
+    for( i = 0; i < N && m[rem][i]; i++) // Zerar a linha removida
+        m[rem][i] = 0;
+    
+    int j;
+    for( i = rem; i < M-1; i++) // Trazer as linhas acima para a anterior
+        for( j = 0; j < N; j++)
+            m[i][j] = m[i+1][j];
+
+    if( i == M-1 ) // Zerar a ultima linha
+        for( j = 0; m[i][j] != 0; j++)
+            m[i][j] = 0;
+}
+
+void unir( int m[M][N], int conj1, int conj2, int unidos)
+{
+    int i, count;
+    for( i = 0; m[conj2][i]; i++ )
+    {
+        count = i;
+        if( seq_search( m[conj1], N, m[conj2][i] ) )
+            count--;
+    }
+    if( count > N )
+        printf("Nao eh possivel fazer a uniao, mais elementos que o limite\n");
+    else
+    {
+        int j;
+        for( i = 0; m[conj1][i]; i++)
+            m[unidos][i] = m[conj1][i];
+        for( j = 0; m[conj2][j]; j++)
+        {
+            m[unidos][i] = m[conj2][j];
+            i++;
+        }
+    }
 }
