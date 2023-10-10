@@ -45,7 +45,7 @@ int main()
                 printf("Qual conjunto voce deseja? ");
                 int conj;
                 scanf("%i", &conj);
-                if( count <= conj )
+                if( count <= conj || conj < 0 )
                     printf("Esse conjunto nao existe!\n");
                 else
                     inserir( m, conj );
@@ -80,11 +80,11 @@ int main()
                 count++;
                 printf("Digite o numero do primeiro conjunto que deseja unir: ");
                 int conj1, conj2;
-                scanf("%i", conj1);
+                scanf("%i", &conj1);
                 printf("Digite o numero do segundo conjunto que deseja unir: ");
-                scanf("%i", conj2);
+                scanf("%i", &conj2);
                 
-                unir( m, conj1, conj2, count);
+                unir( m, conj1, conj2, count-1);
                 system( "pause" );
                 break;
 
@@ -131,18 +131,23 @@ void inserir( int m[M][N], int conj)
     int i;
     for( i = 0; i < N && m[conj][i]; i++) ; // Loop que determina em que posição o usuário pode inserir valores.
 
-    int conf = 1; // Variável que confirma se o usuário quer ou não continuar e de repetição do vetor.
-    while ( i < N && conf )
+    if ( i == N )
+        printf("Conjunto ja esta cheio.\n");
+    else
     {
-        printf("Digite o %i elemento do conjunto: ", i+1);
-        scanf("%i", &m[conj][i]);
-        conf = m[conj][i];
-        if( seq_search( m[conj], i, conf ) ) // Verificação de números iguais.
+        int conf = 1; // Variável que confirma se o usuário quer ou não continuar e de repetição do vetor.
+        while ( i < N && conf )
         {
-            printf("Valor ja existe no vetor, Digite novamente: ");
-            i--;
+            printf("Digite o %i elemento do conjunto: ", i+1);
+            scanf("%i", &m[conj][i]);
+            conf = m[conj][i];
+            if( seq_search( m[conj], i, conf ) ) // Verificação de números iguais.
+            {
+                printf("Valor ja existe no vetor, Digite novamente: ");
+                i--;
+            }
+            i++;
         }
-        i++;
     }
 
     // Verificação de números iguais
@@ -179,9 +184,9 @@ void remover( int m[M][N], int rem )
 void unir( int m[M][N], int conj1, int conj2, int unidos)
 {
     int i, count = 0;
-    for( i = 0; m[conj1][i]; i++ )
+    for( i = 0; m[conj1][i]; i++ ) // Quantidade de termos do primeiro conjunto.
         count++;
-    for( i = 0; m[conj2][i]; i++ )
+    for( i = 0; m[conj2][i]; i++ ) // Verificar se há valores iguais no primeiro e segundo conjunto e contar o total.
     {
         count++;
         if( seq_search( m[conj1], N, m[conj2][i] ) )
@@ -193,11 +198,14 @@ void unir( int m[M][N], int conj1, int conj2, int unidos)
     {
         int j;
         for( i = 0; m[conj1][i]; i++)
-            m[unidos][i] = m[conj1][i];
+            m[unidos][i] = m[conj1][i]; // Acrescenta o primeiro conjunto a união
         for( j = 0; m[conj2][j]; j++)
         {
-            m[unidos][i] = m[conj2][j];
-            i++;
+            if( seq_search( m[conj1], i, m[conj2][j]) == 0 ) // Se um elemento do segundo conjunto for igual a um do primeiro, ele nao sera acrescentado.
+            {
+                m[unidos][i] = m[conj2][j];
+                i++;
+            }
         }
     }
 }
