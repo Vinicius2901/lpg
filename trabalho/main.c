@@ -345,12 +345,7 @@ void busca_val ( int m[M][N], int valor, int limite ) {
         for( j = 0; m[i][j]; j++ )
             if( m[i][j] == valor )
                 printf("%i ", i);
-    
-    /*for( i = 0; v[i] != -1; i++ )
-        printf("%i ", v[i] );*/
 
     printf("\n");
 
-    /*for( i = 0; i < limite; i++ )
-        v[i] = -1;*/
 }
