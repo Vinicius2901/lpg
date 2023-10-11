@@ -37,7 +37,7 @@ int main()
                 }
                 else
                     printf("Limite maximo de conjuntos atingido\n");
-                //system( "pause" );
+                system( "pause" );
                 break;
 
             case 2:
@@ -338,22 +338,19 @@ void mostra_conj( int m[M][N] , int count ) {
 void busca_val ( int m[M][N], int valor, int limite ) {
     int v[limite];
     int i, j, k = 0;
+    printf("O valor foi encontrado nos conjuntos: ");
     for( i = 0; i < limite; i++ )
         v[i] = -1;
     for( i = 0; i < limite; i++ )
         for( j = 0; m[i][j]; j++ )
             if( m[i][j] == valor )
-            {
-                v[k] = i;
-                k++;
-            }
-
-    printf("O valor foi encontrado nos conjuntos: ");
-    for( i = 0; v[i] != -1; i++ )
-        printf("%i ", v[i] );
+                printf("%i ", i);
+    
+    /*for( i = 0; v[i] != -1; i++ )
+        printf("%i ", v[i] );*/
 
     printf("\n");
 
-    for( i = 0; i < limite; i++ )
-        v[i] = -1;
+    /*for( i = 0; i < limite; i++ )
+        v[i] = -1;*/
 }
