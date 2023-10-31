@@ -1,3 +1,5 @@
+// TRABALHO FEITO POR RAFAEL RIBEIRO KULGE E VINICIUS GIROTI.
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,7 +10,7 @@ void menu();
 int seq_search( int m[], int n, int chave );
 void inserir( int m[M][N], int conj);
 void remover( int m[M][N], int rem );
-void unir( int m[M][N], int conj1, int conj2, int unidos);
+int unir( int m[M][N], int conj1, int conj2, int unidos);
 void interseccao( int m[M][N], int conj1, int conj2, int interseccao );
 void mostra_um_conj( int m[] );
 void mostra_conj ( int m[M][N] ,int count );
@@ -18,10 +20,10 @@ int main()
 {
     int m[M][N];
     int i, j, count = 0;
-    for( i = 0; i < M; i++ )
+    for( i = 0; i < M; i++ ) // Inicialização da matriz igualando todos os elementos a 0.
         for( j = 0; j < N; j++ )
             m[i][j] = 0;
-    int opt, conj, conj1, conj2, key;
+    int opt, conj, conj1, conj2, key, conf = 0;
     do
     {
         system( "cls" );
@@ -30,7 +32,7 @@ int main()
         switch( opt )
         {
             case 1:
-                if( count < M)
+                if( count < M) // Contagem deve ser menor que o numero de linhas totais.
                 {
                     count++;
                     printf("Conjunto %i foi criado!\n", count-1);
@@ -49,10 +51,10 @@ int main()
                 printf("Qual conjunto voce deseja? ");
                 scanf("%i", &conj);
 
-                while( conj >= count )
+                while( conj >= count ) // Garantia de que o usuário escolheu um conjunto que já foi criado.
                 {
                     printf("Esse conjunto nao existe ainda, digite novamente: ");
-                    scanf("%i", conj);
+                    scanf("%i", &conj);
                 }
                 
                 if( count <= conj || conj < 0 ) // O contador será sempre um número acima do conjunto e o conjunto nunca será negativo.
@@ -104,7 +106,9 @@ int main()
 
                 count++;
 
-                unir( m, conj1, conj2, count-1);
+                conf = unir( m, conj1, conj2, count-1);
+                if( !conf )
+                    count--;
                 //system( "pause" );
                 break;
 
@@ -278,7 +282,7 @@ void remover( int m[M][N], int rem )
             m[i][j] = 0;
 }
 
-void unir( int m[M][N], int conj1, int conj2, int unidos)
+int unir( int m[M][N], int conj1, int conj2, int unidos)
 {
     int i, count = 0;
     for( i = 0; m[conj1][i]; i++ ) // Quantidade de termos do primeiro conjunto.
@@ -287,21 +291,23 @@ void unir( int m[M][N], int conj1, int conj2, int unidos)
         if( !seq_search( m[conj1], N, m[conj2][i] ) )
             count++;
     if( count > N )
-        printf("Nao eh possivel fazer a uniao, mais elementos que o limite\n");
-    else
     {
-        int j;
-        for( i = 0; m[conj1][i]; i++)
-            m[unidos][i] = m[conj1][i]; // Acrescenta o primeiro conjunto a união
-        for( j = 0; m[conj2][j]; j++)
+        printf("Nao eh possivel fazer a uniao, mais elementos que o limite\n");
+        return 0;
+    }
+
+    int j;
+    for( i = 0; m[conj1][i]; i++)
+        m[unidos][i] = m[conj1][i]; // Acrescenta o primeiro conjunto a união
+    for( j = 0; m[conj2][j]; j++)
+    {
+        if( seq_search( m[conj1], i, m[conj2][j]) == 0 ) // Se um elemento do segundo conjunto for igual a um do primeiro, ele nao sera acrescentado.
         {
-            if( seq_search( m[conj1], i, m[conj2][j]) == 0 ) // Se um elemento do segundo conjunto for igual a um do primeiro, ele nao sera acrescentado.
-            {
-                m[unidos][i] = m[conj2][j];
-                i++;
-            }
+            m[unidos][i] = m[conj2][j];
+            i++;
         }
     }
+    return 1;
 }
 
 void interseccao( int m[M][N], int conj1, int conj2, int interseccao )
@@ -317,7 +323,7 @@ void interseccao( int m[M][N], int conj1, int conj2, int interseccao )
         }
 }
 
-void mostra_um_conj( int m[] )
+void mostra_um_conj( int m[] ) // Mostra um conjunto.
 {
     int i;
     for( i = 0; m[i]; i++ )
@@ -325,7 +331,8 @@ void mostra_um_conj( int m[] )
     printf("\n");
 }
 
-void mostra_conj( int m[M][N] , int count ) {
+void mostra_conj( int m[M][N] , int count )  // Mostra todos os conjuntos.
+{
     int i, j;
     for ( i = 0; i < count; i++ ) 
     {
@@ -335,7 +342,8 @@ void mostra_conj( int m[M][N] , int count ) {
     }
 }
 
-void busca_val ( int m[M][N], int valor, int limite ) {
+void busca_val ( int m[M][N], int valor, int limite ) 
+{
     int v[limite];
     int i, j, k = 0;
     printf("O valor foi encontrado nos conjuntos: ");
