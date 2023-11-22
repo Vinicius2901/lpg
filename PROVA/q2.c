@@ -34,5 +34,6 @@ char *tira_letra( char *s, char c )
             strrem = realloc( strrem, aux );
         }
     strrem = realloc(strrem, aux+1 );
+    strrem[aux+1] = 0;
     return strrem;
 }
