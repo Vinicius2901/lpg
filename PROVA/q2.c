@@ -16,6 +16,8 @@ int main()
     char *r = tira_letra( s, key );
     
     printf("A palavra '%s' sem '%c' eh: %s\n", s, key, r );
+
+    free( r );
     
     return 0;
     
