@@ -25,7 +25,7 @@ char *tira_letra( char *s, char c )
 {
     int i, aux = 0;
     int n = strlen( s );
-    char *strrem = malloc( n+1 );
+    char *strrem = malloc( 0 );
     for( i = 0; i < n+1; i++ )
         if( s[i] != c )
         {
