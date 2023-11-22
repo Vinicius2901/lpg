@@ -23,7 +23,7 @@ int main()
     int lm, cm;
     max_matriz( m, &nm, &lm, &cm );
     
-    printf("O maior numero da matriz eh %f na linha %i e coluna %i", nm, lm, cm );
+    printf("O maior numero da matriz eh %f na linha %i e coluna %i\n", nm, lm, cm );
     
     return 0;
     
