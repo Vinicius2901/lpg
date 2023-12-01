@@ -12,7 +12,7 @@ int main()
     FILE *f = fopen( "produtos.txt", "rt" );
     if( f == NULL )
     {
-        printf("Arquico nao encontrado!\n");
+        printf("Arquivo nao encontrado!\n");
     }
     else
     {
