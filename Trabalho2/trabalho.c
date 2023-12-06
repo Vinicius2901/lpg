@@ -9,7 +9,7 @@ void carrega_registro( Evento *v, int n, char *nome_arq )
     FILE *f = fopen( nome_arq, "rt");
     if( f == NULL )
     {
-        printf("O arquivo ainda nao existe");
+        printf("O arquivo ainda nao existe\n");
     }
     else
     {
@@ -34,19 +34,20 @@ void carrega_registro( Evento *v, int n, char *nome_arq )
 
 void menu()
 {
-    printf("Digite o numero de qual opcao deseja:\n");
+    printf("\nDigite o numero de qual opcao deseja:\n");
     printf("( 1 ) Cadastrar novo evento\n");
     printf("( 2 ) Mostrar todos os eventos da agenda\n");
     printf("( 3 ) Mostrar todos os eventos de uma data\n");
     printf("( 4 ) Mostrar todos os eventos com uma descricao\n");
     printf("( 5 ) Remover evento\n");
-    printf("( 6 ) Sair do programa");
+    printf("( 6 ) Sair do programa\n\n");
 }
 
-void mostrar_evento( Evento *x )
+void mostrar_evento( Evento *x ) // Função auxiliar
 {
-    printf("Data do evento: %d/%d/%d\n", x->event.dia, x->event.mes, x->event.mes );
-    printf("Horario: %d\n", x->inicio.hora, x->inicio.min );
+    printf("Data do evento: %d/%d/%d\n", x->event.dia, x->event.mes, x->event.ano );
+    printf("Horario de inicio: %dh%dmin\n", x->inicio.hora, x->inicio.min );
+    printf("Horario de fim: %dh%dmin\n", x->fim.hora, x->fim.min );
     printf("Descricao: %s\n", x->info );
     printf("Local: %s\n\n", x->local );
 }
@@ -79,9 +80,9 @@ void mostra_evento_desc( Evento *x, int n )
     int i;
     char ev[50];
     printf("Digite o nome do evento deseja procurar: ");
-    scanf("%[^\n]", ev );
+    scanf(" %[^\n]", ev );
     for( i = 0; i < n; i++ )
-        if( strcmp( x[i].info, ev ) )
+        if( strcmp( x[i].info, ev ) == 0 )
             mostrar_evento( &x[i] );
 }
 
@@ -91,8 +92,13 @@ int insere_evento( Evento *x, int n )
     //x = realloc( x, n );
     Evento conf;
     le_data( &conf.event );
-    le_horario( &conf.inicio );
-    le_horario( &conf.fim );
+    do
+    {
+        le_horario( &conf.inicio );
+        le_horario( &conf.fim );
+        if( (conf.inicio.hora > conf.fim.hora && conf.inicio.hora != conf.fim.hora) || (conf.inicio.min > conf.fim.min && conf.inicio.hora == conf.fim.hora) )
+            printf("\nHoraio de inicio deve anteceder o horario de fim!\n\n");
+    } while ( (conf.inicio.hora > conf.fim.hora && conf.inicio.hora != conf.fim.hora) || (conf.inicio.min > conf.fim.min && conf.inicio.hora == conf.fim.hora) );
     int i;
     for( i = 0; i < n; i++ )
     {
@@ -102,11 +108,11 @@ int insere_evento( Evento *x, int n )
                 return 1;
             if( compara_horario( &x[i].inicio, &conf.inicio ) > 0 && compara_horario( &x[i].inicio, &conf.fim ) < 0 )
                 return 1;
-            if( compara_horario( &x[i].inicio, &conf.inicio ) > 0 && compara_horario( &x[i].fim, &conf.fim ) > 0 )
+            if( compara_horario( &x[i].inicio, &conf.fim ) < 0 && compara_horario( &x[i].fim, &conf.fim ) > 0 )
                 return 1;
         }
     }
-
+    return 0;
 }
 
 void le_horario( Horario *x )
