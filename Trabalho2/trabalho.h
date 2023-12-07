@@ -14,7 +14,7 @@ typedef struct
     char local[50];
 } Evento;
 
-void carrega_registro( Evento *v, int n, char *nome_arq );
+void carrega_registro( Evento *v, int *n, char *nome_arq );
 
 void menu();
 
@@ -26,8 +26,14 @@ void mostra_evento_data( Evento *x, int n );
 
 void mostra_evento_desc( Evento *x, int n );
 
-int insere_evento( Evento *x, int n );
+int insere_evento( Evento *x, int *n );
 
 void le_horario( Horario *x );
 
 int compara_horario( Horario *a, Horario *b );
+
+void selection_sort_Evento( Evento *x, int k );
+
+void rm_evento( Evento *x, int *n, int rmv );
+
+void salva_cadastro( Evento *x, int n , char *nome_arq );
