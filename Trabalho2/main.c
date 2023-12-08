@@ -10,6 +10,8 @@ int main()
     Evento *v = NULL; // Declaração do vetor de eventos.
     int n = 0;
     int i, opt, conf, aux = 0;
+    Data conf1;
+    
     system("cls");
     carrega_registro( &v, &n, "eventos.txt" ); // Carrega os registros dos eventos já registrados antes da execução do código.
 
@@ -42,7 +44,8 @@ int main()
                 printf("\nAgenda vazia\n");
                 break;
             }
-            conf = mostra_evento_data( v, n );
+            le_data( &conf1 );
+            conf = mostra_evento_data( v, n, conf1 );
             if( conf )
                 printf("\nNao existem eventos nessa data\n");
             system("pause");
