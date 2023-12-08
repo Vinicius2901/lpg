@@ -22,7 +22,7 @@ void mostrar_evento( Evento *x );
 
 void mostra_todos_eventos( Evento *x, int n );
 
-int mostra_evento_data( Evento *x, int n );
+int mostra_evento_data( Evento *x, int n, Data conf );
 
 int mostra_evento_desc( Evento *x, int n );
 
