@@ -155,6 +155,7 @@ int insere_evento( Evento **x, int *n )
     (*n)++;
     *x = realloc( *x, sizeof(Evento) * *n );
     (*x)[(*n)-1] = conf;
+    printf("'%s' criado com sucesso\n", (*x)[(*n)-1].info );
 
     // ORDENAÇÃO DOS EVENTOS.
 
@@ -254,7 +255,7 @@ int rm_evento( Evento **x, int *n )
     if( aux != -1 )
     {
         strcpy( removido, (*x)[aux].info );
-        printf("'%s' foi removido", removido );
+        printf("'%s' foi removido com sucesso\n", removido );
         while( i < *n )
         {
             (*x)[aux] = (*x)[i];
