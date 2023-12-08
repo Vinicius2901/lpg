@@ -58,11 +58,9 @@ void mostra_todos_eventos( Evento *x, int n )
     }
 }
 
-int mostra_evento_data( Evento *x, int n )
+int mostra_evento_data( Evento *x, int n, Data conf )
 {
     int i, aux = 0;
-    Data conf;
-    le_data( &conf );
 
     int vf = compara_datas( &x[i].event, &conf );
 
@@ -75,7 +73,7 @@ int mostra_evento_data( Evento *x, int n )
     }
     if( aux )
     {
-        printf("Seus eventos em %i/%i/%i sao:\n\n", conf.dia, conf.mes, conf.ano );
+        printf("\nSeus eventos em %i/%i/%i sao:\n\n", conf.dia, conf.mes, conf.ano );
         for( i = 0; i < n; i++ )
         {
         int vf = compara_datas( &x[i].event, &conf );
@@ -99,7 +97,7 @@ int mostra_evento_desc( Evento *x, int n )
 
     if( aux )
     {
-        printf("Segue seus eventos com nome '%s':\n", ev );
+        printf("\nSegue seus eventos com nome '%s':\n\n", ev );
         for( i = 0; i < n; i++ )
         if( strcmp( x[i].info, ev ) == 0 )
             mostrar_evento( &x[i] );
@@ -115,6 +113,7 @@ int insere_evento( Evento **x, int *n )
 
     Evento conf;
     le_data( &conf.event );
+    
     do // HORARIO DE INICIO DEVE SER MENOR QUE O HORARIO DE FIM.
     {
         le_horario_inicio( &conf.inicio );
@@ -245,28 +244,34 @@ int rm_evento( Evento **x, int *n )
     Data rmv;
     Horario rem;
     le_data( &rmv );
-    le_horario( &rem );
-    
-    for( i = 0; i < *n && aux == -1; i++ )
+    int vf = mostra_evento_data( *x, *n, rmv );
+    if( vf )
+        return 1;
+    else
     {
-        if( compara_datas( &(*x)[i].event, &rmv ) == 0 && compara_horario( &(*x)[i].inicio, &rem ) == 0 )
-            aux = i;
-    }
-    if( aux != -1 )
-    {
-        strcpy( removido, (*x)[aux].info );
-        printf("'%s' foi removido com sucesso\n", removido );
-        while( i < *n )
+        le_horario_inicio( &rem );
+        
+        for( i = 0; i < *n && aux == -1; i++ )
         {
-            (*x)[aux] = (*x)[i];
-            aux++;
-            i++;
+            if( compara_datas( &(*x)[i].event, &rmv ) == 0 && compara_horario( &(*x)[i].inicio, &rem ) == 0 )
+                aux = i;
         }
-        *x = realloc( *x, aux * sizeof(Evento) );
-        (*n)--;
-        return 0;
+        if( aux != -1 )
+        {
+            strcpy( removido, (*x)[aux].info );
+            printf("'%s' foi removido com sucesso\n", removido );
+            while( i < *n )
+            {
+                (*x)[aux] = (*x)[i];
+                aux++;
+                i++;
+            }
+            *x = realloc( *x, aux * sizeof(Evento) );
+            (*n)--;
+            return 0;
+        }
+        return 1;
     }
-    return 1;
 }
 
 void salva_cadastro( Evento *x, int n , char *nome_arq )
